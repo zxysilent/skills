@@ -455,7 +455,7 @@ func validateC4(data map[string]any) error {
 	return nil
 }
 
-const cloudManifestVersion = "2026.07-neutral.1"
+const cloudIconCatalogVersion = "2026.07-neutral.1"
 
 type cloudIcon struct{ badge, color, glyph string }
 
@@ -464,7 +464,19 @@ var cloudIcons = map[string]cloudIcon{
 	"generic:gateway":       {"GW", "#7c3aed", "gateway"},
 	"generic:compute":       {"APP", "#059669", "compute"},
 	"generic:database":      {"DB", "#ea580c", "database"},
+	"generic:storage":       {"OBJ", "#0284c7", "storage"},
+	"generic:cache":         {"CACHE", "#dc2626", "cache"},
 	"generic:stream":        {"BUS", "#db2777", "stream"},
+	"generic:queue":         {"QUEUE", "#d97706", "queue"},
+	"generic:function":      {"FN", "#9333ea", "function"},
+	"generic:kubernetes":    {"K8S", "#326ce5", "kubernetes"},
+	"generic:security":      {"SEC", "#0f766e", "security"},
+	"generic:identity":      {"IAM", "#4f46e5", "identity"},
+	"generic:search":        {"SEARCH", "#2563eb", "search"},
+	"generic:analytics":     {"BI", "#c2410c", "analytics"},
+	"generic:model":         {"ML", "#7c3aed", "model"},
+	"generic:notification":  {"ALERT", "#e11d48", "notification"},
+	"generic:backup":        {"DR", "#0891b2", "backup"},
 	"generic:observability": {"OBS", "#0891b2", "observe"},
 }
 
@@ -480,8 +492,8 @@ func validateCloud(data map[string]any) error {
 	if !map[string]bool{"provider-neutral": true, "aws": true, "azure": true, "gcp": true, "kubernetes": true}[platform] {
 		return fail("CLOUD_PLATFORM", "unsupported platform_profile: %s", platform)
 	}
-	if getString(data, "icon_manifest_version") != cloudManifestVersion {
-		return fail("CLOUD_ICON_VERSION", "icon_manifest_version must be %s", cloudManifestVersion)
+	if getString(data, "icon_catalog_version") != cloudIconCatalogVersion {
+		return fail("CLOUD_ICON_VERSION", "icon_catalog_version must be %s", cloudIconCatalogVersion)
 	}
 
 	containers := make(map[string]map[string]any)
@@ -603,7 +615,7 @@ func validateCloud(data map[string]any) error {
 		setDefault(node, "icon_color", icon.color)
 		setDefault(node, "glyph", icon.glyph)
 		setDefault(node, "icon_source", "builtin-neutral")
-		setDefault(node, "icon_version", cloudManifestVersion)
+		setDefault(node, "icon_version", cloudIconCatalogVersion)
 		var labels []string
 		for current := deploymentID; current != ""; current = getString(containers[current], "parent") {
 			labels = append([]string{getString(containers[current], "label")}, labels...)

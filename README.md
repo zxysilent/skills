@@ -14,21 +14,16 @@ reference guides accumulated through daily development.
 
 ## Install drawsvg
 
-The drawsvg skill downloads the precompiled `drawcli` binary for the current
-platform into `drawsvg/scripts/`. From the repository root:
+The skill includes native `drawcli` binaries. Run the file matching the host
+operating system and CPU architecture directly. For Linux x86-64:
 
 ```bash
-./drawsvg/scripts/install-drawcli.sh
+./drawsvg/bin/drawcli-linux-amd64 doctor
 ```
 
-On Windows PowerShell:
-
-```powershell
-.\drawsvg\scripts\install-drawcli.ps1
-```
-
-The release binaries are stored in [`bins/`](./bins/). Linux amd64/arm64,
-Windows amd64, and macOS amd64/arm64 are supported.
+Linux amd64/arm64, Windows amd64, and macOS amd64/arm64 are included in
+[`drawsvg/bin/`](./drawsvg/bin/). The Unix convenience launcher at
+`drawsvg/scripts/drawcli` resolves the matching bundled binary automatically.
 
 ## modern-go
 
@@ -58,8 +53,8 @@ skills/
     SKILL.md          # Skill definition
   drawsvg/
     SKILL.md          # SVG diagram skill
-    scripts/           # Installer, runtime, and SVG checker
-  bins/                # Precompiled drawcli releases
+    bin/               # Precompiled drawcli binaries
+    scripts/           # Binary launcher, build script, and SVG checker
   README.md           # This file (English)
   README_CN.md        # 中文说明 (Chinese)
 ```

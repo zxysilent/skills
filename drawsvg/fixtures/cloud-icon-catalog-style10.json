@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "mode": "architecture",
+  "template_type": "architecture",
+  "style": 10,
+  "semantic_profile": "cloud-fabric",
+  "diagram_type": "deployment",
+  "platform_profile": "provider-neutral",
+  "deployment_mode": "CATALOG",
+  "icon_catalog_version": "2026.07-neutral.1",
+  "quality_profile": "showcase",
+  "width": 1280,
+  "height": 680,
+  "title": "Provider-Neutral Cloud Icon Catalog",
+  "subtitle": "Built-in SVG glyphs for deployment diagrams",
+  "containers": [
+    {"id": "region", "deployment_kind": "region", "x": 40, "y": 120, "width": 1200, "height": 500, "label": "Reference Region"}
+  ],
+  "nodes": [
+    {"id": "traffic", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:traffic", "provider": "GENERIC", "x": 80, "y": 165, "width": 150, "height": 70, "label": "Traffic", "sublabel": "edge ingress"},
+    {"id": "gateway", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:gateway", "provider": "GENERIC", "x": 270, "y": 165, "width": 150, "height": 70, "label": "Gateway", "sublabel": "API routing"},
+    {"id": "compute", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:compute", "provider": "GENERIC", "x": 460, "y": 165, "width": 150, "height": 70, "label": "Compute", "sublabel": "application"},
+    {"id": "database", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:database", "provider": "GENERIC", "x": 650, "y": 165, "width": 150, "height": 70, "label": "Database", "sublabel": "persistent data"},
+    {"id": "storage", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:storage", "provider": "GENERIC", "x": 840, "y": 165, "width": 150, "height": 70, "label": "Storage", "sublabel": "objects and files"},
+    {"id": "cache", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:cache", "provider": "GENERIC", "x": 1030, "y": 165, "width": 150, "height": 70, "label": "Cache", "sublabel": "hot data"},
+    {"id": "stream", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:stream", "provider": "GENERIC", "x": 80, "y": 300, "width": 150, "height": 70, "label": "Stream", "sublabel": "event bus"},
+    {"id": "queue", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:queue", "provider": "GENERIC", "x": 270, "y": 300, "width": 150, "height": 70, "label": "Queue", "sublabel": "async work"},
+    {"id": "function", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:function", "provider": "GENERIC", "x": 460, "y": 300, "width": 150, "height": 70, "label": "Function", "sublabel": "serverless"},
+    {"id": "kubernetes", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:kubernetes", "provider": "GENERIC", "x": 650, "y": 300, "width": 150, "height": 70, "label": "Kubernetes", "sublabel": "cluster"},
+    {"id": "security", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:security", "provider": "GENERIC", "x": 840, "y": 300, "width": 150, "height": 70, "label": "Security", "sublabel": "policy"},
+    {"id": "identity", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:identity", "provider": "GENERIC", "x": 1030, "y": 300, "width": 150, "height": 70, "label": "Identity", "sublabel": "access"},
+    {"id": "search", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:search", "provider": "GENERIC", "x": 80, "y": 435, "width": 150, "height": 70, "label": "Search", "sublabel": "index"},
+    {"id": "analytics", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:analytics", "provider": "GENERIC", "x": 270, "y": 435, "width": 150, "height": 70, "label": "Analytics", "sublabel": "reporting"},
+    {"id": "model", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:model", "provider": "GENERIC", "x": 460, "y": 435, "width": 150, "height": 70, "label": "Model", "sublabel": "inference"},
+    {"id": "notification", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:notification", "provider": "GENERIC", "x": 650, "y": 435, "width": 150, "height": 70, "label": "Notification", "sublabel": "alerts"},
+    {"id": "backup", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:backup", "provider": "GENERIC", "x": 840, "y": 435, "width": 150, "height": 70, "label": "Backup", "sublabel": "recovery"},
+    {"id": "observability", "kind": "cloud_service", "deployment_id": "region", "icon_id": "generic:observability", "provider": "GENERIC", "x": 1030, "y": 435, "width": 150, "height": 70, "label": "Observability", "sublabel": "signals"}
+  ],
+  "arrows": []
+}

@@ -1031,6 +1031,12 @@ func renderCloudService(b *builder, n ir.Node, profile *StyleProfile) {
 	if kind == "edge" {
 		glyph = "globe"
 	}
+	if semanticColor := rawString(n, "icon_color"); semanticColor != "" {
+		color = semanticColor
+	}
+	if semanticGlyph := rawString(n, "glyph"); semanticGlyph != "" {
+		glyph = semanticGlyph
+	}
 	provider := rawString(n, "provider")
 	if provider == "" {
 		provider = "CLOUD"
@@ -1045,14 +1051,48 @@ func renderCloudService(b *builder, n ir.Node, profile *StyleProfile) {
 
 func cloudGlyph(b *builder, glyph string, cx, cy float64, color string) {
 	common := fmt.Sprintf(`fill="none" stroke="%s" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"`, color)
+	b.add(`<g data-cloud-glyph="%s">`, esc(glyph))
 	switch glyph {
 	case "globe":
 		b.add(`<circle cx="%.0f" cy="%.0f" r="11" %s/><path d="M %.0f %.0f H %.0f M %.0f %.0f C %.0f %.0f %.0f %.0f %.0f %.0f M %.0f %.0f C %.0f %.0f %.0f %.0f %.0f %.0f" %s/>`, cx, cy, common, cx-11, cy, cx+11, cx, cy-11, cx-6, cy-5, cx-6, cy+5, cx, cy+11, cx, cy-11, cx+6, cy-5, cx+6, cy+5, cx, cy+11, common)
+	case "gateway":
+		b.add(`<path d="M %.0f %.0f H %.0f V %.0f H %.0f M %.0f %.0f H %.0f M %.0f %.0f H %.0f" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/>`, cx-11, cy-9, cx+11, cy+9, cx-11, cx-11, cy, cx+11, cx-11, cy+9, cx+11, common, cx, cy, common)
+	case "compute":
+		b.add(`<rect x="%.0f" y="%.0f" width="16" height="16" rx="2" %s/><path d="M %.0f %.0f V %.0f M %.0f %.0f V %.0f M %.0f %.0f V %.0f M %.0f %.0f V %.0f M %.0f %.0f H %.0f M %.0f %.0f H %.0f M %.0f %.0f H %.0f M %.0f %.0f H %.0f" %s/>`, cx-8, cy-8, common, cx-5, cy-12, cy-8, cx+5, cy-12, cy-8, cx-5, cy+8, cy+12, cx+5, cy+8, cy+12, cx-12, cy-5, cx-8, cx+8, cy-5, cx+12, cx-12, cy+5, cx-8, cx+8, cy+5, cx+12, common)
 	case "database":
 		b.add(`<ellipse cx="%.0f" cy="%.0f" rx="11" ry="4" %s/><path d="M %.0f %.0f V %.0f C %.0f %.0f %.0f %.0f %.0f %.0f V %.0f" %s/>`, cx, cy-8, common, cx-11, cy-8, cy+8, cx-11, cy+13, cx+11, cy+13, cx+11, cy+8, cy-8, common)
+	case "storage":
+		b.add(`<path d="M %.0f %.0f H %.0f L %.0f %.0f H %.0f Z M %.0f %.0f V %.0f H %.0f V %.0f" %s/>`, cx-11, cy-7, cx+11, cx+8, cy+10, cx-8, cx-6, cy-10, cy+5, cx+6, cy-10, common)
+	case "cache":
+		b.add(`<rect x="%.0f" y="%.0f" width="22" height="5" rx="2" %s/><rect x="%.0f" y="%.0f" width="22" height="5" rx="2" %s/><rect x="%.0f" y="%.0f" width="22" height="5" rx="2" %s/>`, cx-11, cy-10, common, cx-11, cy-2, common, cx-11, cy+6, common)
+	case "stream":
+		b.add(`<path d="M %.0f %.0f H %.0f M %.0f %.0f H %.0f" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/>`, cx-11, cy-5, cx+11, cx-11, cy+5, cx+11, common, cx-6, cy-5, common, cx, cy+5, common, cx+6, cy-5, common)
+	case "queue":
+		b.add(`<rect x="%.0f" y="%.0f" width="5" height="16" rx="1" %s/><rect x="%.0f" y="%.0f" width="5" height="16" rx="1" %s/><rect x="%.0f" y="%.0f" width="5" height="16" rx="1" %s/>`, cx-11, cy-8, common, cx-2, cy-8, common, cx+7, cy-8, common)
+	case "function":
+		b.add(`<path d="M %.0f %.0f L %.0f %.0f H %.0f L %.0f %.0f H %.0f L %.0f %.0f" %s/>`, cx+1, cy-12, cx-9, cy+1, cx-1, cx-3, cy+12, cx+10, cx+2, cy-4, common)
+	case "kubernetes":
+		b.add(`<path d="M %.0f %.0f L %.0f %.0f L %.0f %.0f L %.0f %.0f L %.0f %.0f L %.0f %.0f Z" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/>`, cx, cy-12, cx+10, cy-6, cx+10, cy+6, cx, cy+12, cx-10, cy+6, cx-10, cy-6, common, cx, cy, common)
+	case "security":
+		b.add(`<path d="M %.0f %.0f L %.0f %.0f V %.0f C %.0f %.0f %.0f %.0f %.0f %.0f C %.0f %.0f %.0f %.0f %.0f %.0f V %.0f Z" %s/><path d="M %.0f %.0f L %.0f %.0f L %.0f %.0f" %s/>`, cx, cy-12, cx+10, cy-8, cy, cx+10, cy+8, cx+5, cy+12, cx, cy+14, cx-5, cy+12, cx-10, cy+8, cx-10, cy, cy-8, common, cx-4, cy, cx-1, cy+3, cx+5, cy-4, common)
+	case "identity":
+		b.add(`<circle cx="%.0f" cy="%.0f" r="4" %s/><path d="M %.0f %.0f C %.0f %.0f %.0f %.0f %.0f %.0f C %.0f %.0f %.0f %.0f %.0f %.0f" %s/>`, cx, cy-6, common, cx-9, cy+11, cx-8, cy+1, cx, cy+1, cx+8, cy+1, cx+9, cy+11, cx-9, cy+11, cx-9, cy+11, common)
+	case "search":
+		b.add(`<circle cx="%.0f" cy="%.0f" r="7" %s/><path d="M %.0f %.0f L %.0f %.0f" %s/>`, cx-3, cy-3, common, cx+2, cy+2, cx+10, cy+10, common)
+	case "analytics":
+		b.add(`<path d="M %.0f %.0f V %.0f H %.0f M %.0f %.0f V %.0f M %.0f %.0f V %.0f M %.0f %.0f V %.0f" %s/>`, cx-11, cy+10, cy-10, cx+11, cx-6, cy+7, cy-1, cx, cy+7, cy-8, cx+6, cy+7, cy-4, common)
+	case "model":
+		b.add(`<circle cx="%.0f" cy="%.0f" r="3" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/><circle cx="%.0f" cy="%.0f" r="3" %s/><path d="M %.0f %.0f L %.0f %.0f M %.0f %.0f L %.0f %.0f" %s/>`, cx-8, cy, common, cx+8, cy-6, common, cx+8, cy+6, common, cx-5, cy, cx+5, cy-6, cx-5, cy, cx+5, cy+6, common)
+	case "notification":
+		b.add(`<path d="M %.0f %.0f V %.0f C %.0f %.0f %.0f %.0f %.0f %.0f C %.0f %.0f %.0f %.0f %.0f %.0f V %.0f H %.0f Z M %.0f %.0f H %.0f" %s/>`, cx-8, cy+7, cy-2, cx-8, cy-10, cx+8, cy-10, cx+8, cy-2, cx+8, cy-2, cx+8, cy+7, cx-8, cy+7, cy+7, cx-8, cx-3, cy+12, cx+3, common)
+	case "backup":
+		b.add(`<path d="M %.0f %.0f A %.0f %.0f 0 1 1 %.0f %.0f M %.0f %.0f L %.0f %.0f L %.0f %.0f" %s/>`, cx+9, cy-5, 10.0, 10.0, cx-4, cy+10, cx+9, cy-5, cx+2, cy-6, cx+7, cy+2, common)
+	case "observe":
+		b.add(`<path d="M %.0f %.0f H %.0f L %.0f %.0f L %.0f %.0f L %.0f %.0f H %.0f" %s/>`, cx-11, cy, cx-5, cx-2, cy-7, cx+3, cy+8, cx+6, cy, cx+11, common)
 	default:
 		b.add(`<rect x="%.0f" y="%.0f" width="22" height="18" rx="4" %s/><path d="M %.0f %.0f H %.0f M %.0f %.0f H %.0f" %s/>`, cx-11, cy-9, common, cx-6, cy-3, cx+6, cx-6, cy+3, cx+3, common)
 	}
+	b.add(`</g>`)
 }
 
 func renderTransitNode(b *builder, n ir.Node, profile *StyleProfile) {

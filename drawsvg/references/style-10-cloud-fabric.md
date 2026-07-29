@@ -25,7 +25,7 @@ the diagram into a vendor icon poster.
 | Cross-region | `#7c3aed`, dashed |
 
 Nested boundaries carry a small `GLOBAL`, `REGION`, or `NETWORK` badge. Nodes
-use a manifest-backed neutral glyph plus provider metadata. A colored ownership
+use a built-in provider-neutral glyph plus provider metadata. A colored ownership
 spine makes each nested deployment boundary readable even in grayscale.
 
 ## Required semantic contract
@@ -34,9 +34,9 @@ Select `semantic_profile: "cloud-fabric"` and provide:
 
 - `diagram_type: "deployment"`
 - `platform_profile`: `provider-neutral`, `aws`, `azure`, `gcp`, or `kubernetes`
-- `icon_manifest_version: "2026.07-neutral.1"`
+- `icon_catalog_version: "2026.07-neutral.1"`
 - at least one `deployment_kind: "region"` boundary
-- every node: `deployment_id` and a manifest-backed `icon_id`
+- every node: `deployment_id` and a built-in neutral `icon_id`
 - every cross-deployment edge: a non-empty `via`
 
 Boundary parents must form an acyclic tree, nesting depth is capped at four,
@@ -45,13 +45,19 @@ least `20px` inside their assigned deployment.
 
 ## Icon policy
 
-The bundled manifest contains provider-neutral geometric glyphs. It records
-official AWS, Azure, and Google Cloud asset URLs as adapter metadata; it does
-not redistribute vendor trademarks. If a user supplies an official icon pack,
-preserve its license and version outside this repository and map it through the
-manifest boundary.
+The Go renderer contains provider-neutral geometric glyphs. It does not
+redistribute vendor trademarks. If a user supplies an official icon pack,
+preserve its license and version outside this repository and use a separately
+versioned adapter.
 
 Never invent a vendor service logo. Unknown `icon_id` values fail validation.
+
+Built-in `icon_id` values: `generic:traffic`, `generic:gateway`,
+`generic:compute`, `generic:database`, `generic:storage`, `generic:cache`,
+`generic:stream`, `generic:queue`, `generic:function`, `generic:kubernetes`,
+`generic:security`, `generic:identity`, `generic:search`, `generic:analytics`,
+`generic:model`, `generic:notification`, `generic:backup`, and
+`generic:observability`.
 
 ## Composition rules
 
@@ -68,7 +74,7 @@ Never invent a vendor service logo. Unknown `icon_id` values fail validation.
 
 - Pale cloud grid and explicit `global → region → network` nesting
 - Ownership spines plus `GLOBAL`, `REGION`, and `NETWORK` boundary badges
-- Manifest-backed globe, compute, database, gateway, stream, or observe glyphs
+- Built-in globe, gateway, compute, database, storage, queue, security, or observe glyphs
 - Top-right platform/region/deployment-mode stamp and named cross-boundary mechanisms
 
 ## Prompt cues

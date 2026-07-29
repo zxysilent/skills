@@ -7,7 +7,7 @@
   "diagram_type": "deployment",
   "platform_profile": "aws",
   "deployment_mode": "ACTIVE–ACTIVE",
-  "icon_manifest_version": "2026.07-neutral.1",
+  "icon_catalog_version": "2026.07-neutral.1",
   "quality_profile": "showcase",
   "width": 960,
   "height": 760,

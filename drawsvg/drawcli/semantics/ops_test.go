@@ -52,6 +52,7 @@ func TestCloudAndEventFixturesValidateAndEnrich(t *testing.T) {
 		profile string
 	}{
 		{"cloud", "../../fixtures/cloud-fabric-style10.json", 10, "cloud-fabric"},
+		{"cloud icon catalog", "../../fixtures/cloud-icon-catalog-style10.json", 10, "cloud-fabric"},
 		{"event", "../../fixtures/event-transit-style11.json", 11, "event-transit"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
@@ -72,13 +73,53 @@ func TestCloudAndEventFixturesValidateAndEnrich(t *testing.T) {
 
 func TestCloudRejectsUnknownIcon(t *testing.T) {
 	data := map[string]any{
-		"diagram_type": "deployment", "platform_profile": "aws", "icon_manifest_version": cloudManifestVersion,
+		"diagram_type": "deployment", "platform_profile": "aws", "icon_catalog_version": cloudIconCatalogVersion,
 		"containers": []any{map[string]any{"id": "region", "deployment_kind": "region", "x": 0.0, "y": 0.0, "width": 300.0, "height": 300.0}},
 		"nodes":      []any{map[string]any{"id": "service", "deployment_id": "region", "icon_id": "missing", "x": 30.0, "y": 30.0, "width": 100.0, "height": 80.0}},
 		"arrows":     []any{},
 	}
 	if err := validateCloud(data); err == nil || err.(*ContractError).Code != "CLOUD_ICON_UNKNOWN" {
 		t.Fatalf("validateCloud() error = %v, want CLOUD_ICON_UNKNOWN", err)
+	}
+}
+
+func TestCloudBuiltInIconsValidateAndEnrichNodes(t *testing.T) {
+	want := map[string]string{
+		"generic:traffic":       "globe",
+		"generic:gateway":       "gateway",
+		"generic:compute":       "compute",
+		"generic:database":      "database",
+		"generic:storage":       "storage",
+		"generic:cache":         "cache",
+		"generic:stream":        "stream",
+		"generic:queue":         "queue",
+		"generic:function":      "function",
+		"generic:kubernetes":    "kubernetes",
+		"generic:security":      "security",
+		"generic:identity":      "identity",
+		"generic:search":        "search",
+		"generic:analytics":     "analytics",
+		"generic:model":         "model",
+		"generic:notification":  "notification",
+		"generic:backup":        "backup",
+		"generic:observability": "observe",
+	}
+	for iconID, glyph := range want {
+		t.Run(iconID, func(t *testing.T) {
+			data := map[string]any{
+				"diagram_type": "deployment", "platform_profile": "provider-neutral", "icon_catalog_version": cloudIconCatalogVersion,
+				"containers": []any{map[string]any{"id": "region", "deployment_kind": "region", "x": 0.0, "y": 0.0, "width": 300.0, "height": 300.0}},
+				"nodes":      []any{map[string]any{"id": "service", "deployment_id": "region", "icon_id": iconID, "x": 30.0, "y": 30.0, "width": 100.0, "height": 80.0}},
+				"arrows":     []any{},
+			}
+			if err := validateCloud(data); err != nil {
+				t.Fatalf("validateCloud(): %v", err)
+			}
+			node := getNodeMap(data)["service"]
+			if got := node["glyph"]; got != glyph {
+				t.Fatalf("glyph = %q, want %q", got, glyph)
+			}
+		})
 	}
 }
 

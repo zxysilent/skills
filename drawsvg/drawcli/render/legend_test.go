@@ -67,3 +67,24 @@ func TestEventTransitSignatureKeepsMarkersInsideBadge(t *testing.T) {
 		t.Fatal("event transit signature markers should use the badge-relative y position")
 	}
 }
+
+func TestCloudServiceUsesSemanticGlyphAndColor(t *testing.T) {
+	diagram, err := ir.Normalize(map[string]any{
+		"mode": "architecture", "style": 10, "width": 240, "height": 160,
+		"nodes": []any{map[string]any{
+			"id": "queue", "kind": "cloud_service", "x": 30, "y": 40,
+			"width": 180, "height": 72, "label": "Work Queue", "sublabel": "async jobs",
+			"glyph": "queue", "icon_color": "#d97706", "provider": "GENERIC",
+		}},
+	})
+	if err != nil {
+		t.Fatalf("normalize diagram: %v", err)
+	}
+	svg := RenderSVG(diagram, GetProfile(10))
+	if !strings.Contains(svg, `data-cloud-glyph="queue"`) {
+		t.Fatal("cloud service should render the semantic queue glyph")
+	}
+	if !strings.Contains(svg, `stroke="#d97706"`) {
+		t.Fatal("cloud service should render with the semantic icon color")
+	}
+}

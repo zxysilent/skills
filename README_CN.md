@@ -13,21 +13,16 @@
 
 ## 安装 drawsvg
 
-drawsvg 会根据当前操作系统和 CPU 架构，将预编译的 `drawcli` 下载到
-`drawsvg/scripts/`。在仓库根目录执行：
+drawsvg 内置原生 `drawcli` 二进制，直接执行与当前操作系统和 CPU 架构匹配的文件。
+Linux x86-64 示例：
 
 ```bash
-./drawsvg/scripts/install-drawcli.sh
+./drawsvg/bin/drawcli-linux-amd64 doctor
 ```
 
-Windows PowerShell 执行：
-
-```powershell
-.\drawsvg\scripts\install-drawcli.ps1
-```
-
-预编译文件位于 [`bins/`](./bins/)，支持 Linux amd64/arm64、Windows amd64
-以及 macOS amd64/arm64。
+预编译文件位于 [`drawsvg/bin/`](./drawsvg/bin/)，支持 Linux amd64/arm64、
+Windows amd64 以及 macOS amd64/arm64。Unix 环境可使用
+`drawsvg/scripts/drawcli` 自动选择匹配的内置二进制。
 
 ## modern-go
 
@@ -54,8 +49,8 @@ skills/
     SKILL.md          # Skill 主文件
   drawsvg/
     SKILL.md          # SVG 图表技能
-    scripts/           # 安装器、运行时和 SVG 校验器
-  bins/                # 预编译 drawcli 发布文件
+    bin/               # 预编译 drawcli 二进制
+    scripts/           # 二进制启动器、构建脚本和 SVG 校验器
   README.md           # 英文说明 (English)
   README_CN.md        # 本文件 (中文)
 ```

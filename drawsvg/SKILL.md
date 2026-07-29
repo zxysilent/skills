@@ -22,7 +22,8 @@ between shell calls.
 - Codex: use the absolute skill directory from the loaded skill metadata.
 - Claude Code: use `${CLAUDE_SKILL_DIR}`.
 
-Install and release-binary instructions for Linux, Windows, and macOS are in
+The release binaries and cross-compilation instructions for Linux, Windows,
+and macOS are in
 [`references/build-drawcli.md`](references/build-drawcli.md).
 
 ## Workflow
@@ -40,20 +41,19 @@ Install and release-binary instructions for Linux, Windows, and macOS are in
 
 ```bash
 SKILL_ROOT="${CLAUDE_SKILL_DIR:-/absolute/path/to/drawsvg}"
+DRAWCLI="$SKILL_ROOT/bin/drawcli-linux-amd64" # Select the matching OS/CPU binary.
 
-"$SKILL_ROOT/scripts/drawcli" validate architecture diagram.json
-"$SKILL_ROOT/scripts/drawcli" render architecture diagram.json out.svg --report layout.json
-"$SKILL_ROOT/scripts/drawcli" check out.svg
-"$SKILL_ROOT/scripts/drawcli" inspect out.svg
+"$DRAWCLI" validate architecture diagram.json
+"$DRAWCLI" render architecture diagram.json out.svg --report layout.json
+"$DRAWCLI" check out.svg
+"$DRAWCLI" inspect out.svg
 "$SKILL_ROOT/scripts/validate-svg.sh" out.svg
 ```
 
-Install the matching release binary into `drawsvg/scripts/` before running the
-skill commands:
+Use the precompiled binary directly when available:
 
 ```bash
-"$SKILL_ROOT/scripts/install-drawcli.sh"
-"$SKILL_ROOT/scripts/drawcli" render architecture diagram.json out.svg
+"$SKILL_ROOT/bin/drawcli-linux-amd64" render architecture diagram.json out.svg
 ```
 
 `drawcli` accepts the legacy JSON payloads used by the bundled fixtures. The
@@ -75,9 +75,9 @@ hand-authored static exception and cannot be generated from a template.
 Before delivery, run:
 
 ```bash
-"$SKILL_ROOT/scripts/drawcli" validate <mode> diagram.json
-"$SKILL_ROOT/scripts/drawcli" render <mode> diagram.json out.svg --report layout.json
-"$SKILL_ROOT/scripts/drawcli" check out.svg
+"$DRAWCLI" validate <mode> diagram.json
+"$DRAWCLI" render <mode> diagram.json out.svg --report layout.json
+"$DRAWCLI" check out.svg
 ```
 
 For arrow-only fixes, preserve nodes, containers, style, and layout; change

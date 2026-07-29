@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 MODULE_ROOT="$SKILL_ROOT/drawcli"
-OUTPUT_DIR="${1:-$SKILL_ROOT/../bins}"
+OUTPUT_DIR="${1:-$SKILL_ROOT/bin}"
 
 mkdir -p "$OUTPUT_DIR"
 cd "$MODULE_ROOT"
