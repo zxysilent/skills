@@ -9,6 +9,25 @@
 | Skill | 说明 |
 |-------|------|
 | [modern-go](./modern-go/SKILL.md) | Go 代码现代化指南 — 基于 `go.mod` 版本，将遗留写法替换为 modern stdlib API (Go 1.0–1.26) |
+| [drawsvg](./drawsvg/SKILL.md) | 使用 Go drawcli 生成经过几何校验的 SVG 技术图表 |
+
+## 安装 drawsvg
+
+drawsvg 会根据当前操作系统和 CPU 架构，将预编译的 `drawcli` 下载到
+`drawsvg/scripts/`。在仓库根目录执行：
+
+```bash
+./drawsvg/scripts/install-drawcli.sh
+```
+
+Windows PowerShell 执行：
+
+```powershell
+.\drawsvg\scripts\install-drawcli.ps1
+```
+
+预编译文件位于 [`bins/`](./bins/)，支持 Linux amd64/arm64、Windows amd64
+以及 macOS amd64/arm64。
 
 ## modern-go
 
@@ -33,6 +52,10 @@
 skills/
   modern-go/
     SKILL.md          # Skill 主文件
+  drawsvg/
+    SKILL.md          # SVG 图表技能
+    scripts/           # 安装器、运行时和 SVG 校验器
+  bins/                # 预编译 drawcli 发布文件
   README.md           # 英文说明 (English)
   README_CN.md        # 本文件 (中文)
 ```

@@ -10,6 +10,25 @@ reference guides accumulated through daily development.
 | Skill | Description |
 |-------|-------------|
 | [modern-go](./modern-go/SKILL.md) | Modernizing Go Code — replace legacy idioms with modern stdlib APIs based on the project's `go.mod` version (Go 1.0–1.26) |
+| [drawsvg](./drawsvg/SKILL.md) | Generate geometry-checked technical diagrams as SVG with the Go drawcli runtime |
+
+## Install drawsvg
+
+The drawsvg skill downloads the precompiled `drawcli` binary for the current
+platform into `drawsvg/scripts/`. From the repository root:
+
+```bash
+./drawsvg/scripts/install-drawcli.sh
+```
+
+On Windows PowerShell:
+
+```powershell
+.\drawsvg\scripts\install-drawcli.ps1
+```
+
+The release binaries are stored in [`bins/`](./bins/). Linux amd64/arm64,
+Windows amd64, and macOS amd64/arm64 are supported.
 
 ## modern-go
 
@@ -37,6 +56,10 @@ patterns, and only suggests replacements supported by that version.
 skills/
   modern-go/
     SKILL.md          # Skill definition
+  drawsvg/
+    SKILL.md          # SVG diagram skill
+    scripts/           # Installer, runtime, and SVG checker
+  bins/                # Precompiled drawcli releases
   README.md           # This file (English)
   README_CN.md        # 中文说明 (Chinese)
 ```
