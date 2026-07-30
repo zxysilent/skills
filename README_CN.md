@@ -29,25 +29,40 @@ Windows PowerShell 执行：
 安装器只下载与平台匹配的文件到 `drawsvg/scripts/`。支持 Linux
 amd64/arm64、Windows amd64 以及 macOS amd64/arm64。
 
-## 大模型自主安装
+## 作为 Codex Skill 安装
 
-当大模型需要使用此 skill 且本地尚未安装时，应先使用宿主环境的 skill
-安装器。以 Codex 为例：
+在 Codex 环境执行一次以下命令。它只安装 `drawsvg`，再为当前 Linux 或
+macOS 平台下载原生运行时：
 
 ```bash
 SKILLS_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
-python3 "$SKILLS_HOME/.system/skill-installer/scripts/install-skill-from-github.py" \
-  --repo zxysilent/skills --path drawsvg
+INSTALLER="$SKILLS_HOME/.system/skill-installer/scripts/install-skill-from-github.py"
+PYTHON_BIN="$(command -v python3.12 || command -v python3.11 || command -v python3.10 || command -v python3.9 || command -v python3.8)"
 
-SKILL_ROOT="$SKILLS_HOME/drawsvg"
-"$SKILL_ROOT/scripts/install-drawcli.sh"
-"$SKILL_ROOT/scripts/drawcli" doctor
+test -n "$PYTHON_BIN" || { echo "需要 Python 3.8+" >&2; exit 1; }
+"$PYTHON_BIN" "$INSTALLER" --repo zxysilent/skills --path drawsvg --method git
+"$SKILLS_HOME/drawsvg/scripts/install-drawcli.sh"
+"$SKILLS_HOME/drawsvg/scripts/drawcli" doctor
 ```
 
-`doctor` 成功后，读取 `"$SKILL_ROOT/SKILL.md"` 并按其中流程工作。如果
-skill 目录已经存在，则跳过 GitHub 安装步骤，先检查 `SKILL.md`，只安装或
-更新匹配平台的 `drawcli` 运行时。不要直接运行 Go 源码，也不要把其它平台
-的二进制复制到 `scripts/`。
+安装器固定使用 Git，而不是 GitHub archive 下载，以便稳定地完成 sparse
+checkout。该方式要求 Python 3.8+；没有兼容 Python 或 Codex 安装器时，使用
+下面的手工 fallback：
+
+```bash
+SKILLS_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
+TEMP_DIR="$(mktemp -d)"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/zxysilent/skills.git "$TEMP_DIR"
+git -C "$TEMP_DIR" sparse-checkout set drawsvg
+mkdir -p "$SKILLS_HOME"
+cp -a "$TEMP_DIR/drawsvg" "$SKILLS_HOME/drawsvg"
+"$SKILLS_HOME/drawsvg/scripts/install-drawcli.sh"
+"$SKILLS_HOME/drawsvg/scripts/drawcli" doctor
+```
+
+`doctor` 成功后，先读取 `"$SKILLS_HOME/drawsvg/SKILL.md"` 再使用该 skill。
+如果 skill 已存在，跳过复制/安装步骤，只更新匹配平台的 `drawcli` 运行时。
+不要直接运行 Go 源码，也不要把其它平台的二进制复制到 `scripts/`。
 
 完整的生成流程、质量检查、风格和图标目录请阅读
 [`drawsvg/SKILL.md`](./drawsvg/SKILL.md) 及其 references。

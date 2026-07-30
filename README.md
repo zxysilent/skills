@@ -32,26 +32,42 @@ The installer downloads only the matching binary from `bins/` into
 `drawsvg/scripts/`. Linux amd64/arm64, Windows amd64, and macOS amd64/arm64
 are supported.
 
-## Autonomous Agent Installation
+## Install as a Codex Skill
 
-When an agent needs this skill and the repository is not already installed,
-use the host skill installer first. For Codex, run:
+Run this once in a Codex environment. It installs only `drawsvg`, then fetches
+the native runtime for the current Linux or macOS platform:
 
 ```bash
 SKILLS_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
-python3 "$SKILLS_HOME/.system/skill-installer/scripts/install-skill-from-github.py" \
-  --repo zxysilent/skills --path drawsvg
+INSTALLER="$SKILLS_HOME/.system/skill-installer/scripts/install-skill-from-github.py"
+PYTHON_BIN="$(command -v python3.12 || command -v python3.11 || command -v python3.10 || command -v python3.9 || command -v python3.8)"
 
-SKILL_ROOT="$SKILLS_HOME/drawsvg"
-"$SKILL_ROOT/scripts/install-drawcli.sh"
-"$SKILL_ROOT/scripts/drawcli" doctor
+test -n "$PYTHON_BIN" || { echo "Python 3.8+ is required" >&2; exit 1; }
+"$PYTHON_BIN" "$INSTALLER" --repo zxysilent/skills --path drawsvg --method git
+"$SKILLS_HOME/drawsvg/scripts/install-drawcli.sh"
+"$SKILLS_HOME/drawsvg/scripts/drawcli" doctor
 ```
 
-After `doctor` succeeds, read `"$SKILL_ROOT/SKILL.md"` and follow its
-workflow. If `drawsvg` already exists in the agent skill directory, skip the
-GitHub install step, inspect its `SKILL.md`, and only install or refresh the
-matching `drawcli` runtime. Do not run the Go source directly or copy a
-different platform binary into `scripts/`.
+The installer intentionally uses Git instead of GitHub archive download so
+agents get a reliable sparse checkout. It requires Python 3.8+; use the
+manual fallback below when no compatible Python or Codex skill installer is
+available.
+
+```bash
+SKILLS_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
+TEMP_DIR="$(mktemp -d)"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/zxysilent/skills.git "$TEMP_DIR"
+git -C "$TEMP_DIR" sparse-checkout set drawsvg
+mkdir -p "$SKILLS_HOME"
+cp -a "$TEMP_DIR/drawsvg" "$SKILLS_HOME/drawsvg"
+"$SKILLS_HOME/drawsvg/scripts/install-drawcli.sh"
+"$SKILLS_HOME/drawsvg/scripts/drawcli" doctor
+```
+
+After `doctor` succeeds, read `"$SKILLS_HOME/drawsvg/SKILL.md"` before using
+the skill. If the skill already exists, skip the copy/install command and only
+refresh the matching `drawcli` runtime. Do not run the Go source directly or
+copy a different platform binary into `scripts/`.
 
 For the complete generation workflow, quality gates, styles, and icon catalog,
 read [`drawsvg/SKILL.md`](./drawsvg/SKILL.md) and its linked references.
