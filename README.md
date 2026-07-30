@@ -32,6 +32,27 @@ The installer downloads only the matching binary from `bins/` into
 `drawsvg/scripts/`. Linux amd64/arm64, Windows amd64, and macOS amd64/arm64
 are supported.
 
+## Autonomous Agent Installation
+
+When an agent needs this skill and the repository is not already installed,
+use the host skill installer first. For Codex, run:
+
+```bash
+SKILLS_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
+python3 "$SKILLS_HOME/.system/skill-installer/scripts/install-skill-from-github.py" \
+  --repo zxysilent/skills --path drawsvg
+
+SKILL_ROOT="$SKILLS_HOME/drawsvg"
+"$SKILL_ROOT/scripts/install-drawcli.sh"
+"$SKILL_ROOT/scripts/drawcli" doctor
+```
+
+After `doctor` succeeds, read `"$SKILL_ROOT/SKILL.md"` and follow its
+workflow. If `drawsvg` already exists in the agent skill directory, skip the
+GitHub install step, inspect its `SKILL.md`, and only install or refresh the
+matching `drawcli` runtime. Do not run the Go source directly or copy a
+different platform binary into `scripts/`.
+
 For the complete generation workflow, quality gates, styles, and icon catalog,
 read [`drawsvg/SKILL.md`](./drawsvg/SKILL.md) and its linked references.
 
