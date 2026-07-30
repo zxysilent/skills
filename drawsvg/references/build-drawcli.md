@@ -5,17 +5,25 @@
 
 ## Bundled Binaries
 
-The skill includes:
+The repository root stores:
 
-- `bin/drawcli-linux-amd64`
-- `bin/drawcli-linux-arm64`
-- `bin/drawcli-windows-amd64.exe`
-- `bin/drawcli-darwin-amd64`
-- `bin/drawcli-darwin-arm64`
+- `bins/drawcli-linux-amd64`
+- `bins/drawcli-linux-arm64`
+- `bins/drawcli-windows-amd64.exe`
+- `bins/drawcli-darwin-amd64`
+- `bins/drawcli-darwin-arm64`
 
-Use the binary matching the host platform. Windows and macOS binaries cannot be
-smoke-tested on Linux without matching runners; their target formats can still
-be checked with `file`.
+The skill installer downloads only the matching artifact into
+`drawsvg/scripts/`:
+
+```bash
+"$SKILL_ROOT/scripts/install-drawcli.sh"
+"$SKILL_ROOT/scripts/drawcli" doctor
+```
+
+On Windows, run `scripts/install-drawcli.ps1`; it writes `scripts/drawcli.exe`.
+Windows and macOS binaries cannot be smoke-tested on Linux without matching
+runners; their target formats can still be checked with `file`.
 
 ## Rebuild Release Binaries
 
@@ -38,16 +46,17 @@ SKILL_ROOT="${CLAUDE_SKILL_DIR:-/absolute/path/to/drawsvg}"
 cd "$SKILL_ROOT/drawcli"
 GOCACHE=/tmp/drawcli-cache go test ./...
 
-file "$SKILL_ROOT/bin/drawcli-linux-amd64" \
-     "$SKILL_ROOT/bin/drawcli-linux-arm64" \
-     "$SKILL_ROOT/bin/drawcli-windows-amd64.exe" \
-     "$SKILL_ROOT/bin/drawcli-darwin-amd64" \
-     "$SKILL_ROOT/bin/drawcli-darwin-arm64"
+file "$SKILL_ROOT/../bins/drawcli-linux-amd64" \
+     "$SKILL_ROOT/../bins/drawcli-linux-arm64" \
+     "$SKILL_ROOT/../bins/drawcli-windows-amd64.exe" \
+     "$SKILL_ROOT/../bins/drawcli-darwin-amd64" \
+     "$SKILL_ROOT/../bins/drawcli-darwin-arm64"
 
-"$SKILL_ROOT/bin/drawcli-linux-amd64" doctor
-"$SKILL_ROOT/bin/drawcli-linux-amd64" render memory \
+"$SKILL_ROOT/scripts/install-drawcli.sh"
+"$SKILL_ROOT/scripts/drawcli" doctor
+"$SKILL_ROOT/scripts/drawcli" render memory \
   "$SKILL_ROOT/fixtures/mem0-style1.json" /tmp/drawcli-smoke.svg
-"$SKILL_ROOT/bin/drawcli-linux-amd64" check /tmp/drawcli-smoke.svg
+"$SKILL_ROOT/scripts/drawcli" check /tmp/drawcli-smoke.svg
 ```
 
 Expected formats are ELF x86-64/ARM64 for Linux, PE32+ x86-64 for Windows, and

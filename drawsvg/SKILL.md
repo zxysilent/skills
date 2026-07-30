@@ -22,8 +22,8 @@ between shell calls.
 - Codex: use the absolute skill directory from the loaded skill metadata.
 - Claude Code: use `${CLAUDE_SKILL_DIR}`.
 
-The release binaries and cross-compilation instructions for Linux, Windows,
-and macOS are in
+The release binaries, installation, and cross-compilation instructions for
+Linux, Windows, and macOS are in
 [`references/build-drawcli.md`](references/build-drawcli.md).
 
 The runtime is provider-neutral by default. Style 10 uses the built-in icon
@@ -45,7 +45,9 @@ vendor logos are external adapters and are not bundled.
 
 ```bash
 SKILL_ROOT="${CLAUDE_SKILL_DIR:-/absolute/path/to/drawsvg}"
-DRAWCLI="$SKILL_ROOT/bin/drawcli-linux-amd64" # Select the matching OS/CPU binary.
+
+"$SKILL_ROOT/scripts/install-drawcli.sh"
+DRAWCLI="$SKILL_ROOT/scripts/drawcli"
 
 "$DRAWCLI" validate architecture diagram.json
 "$DRAWCLI" render architecture diagram.json out.svg --report layout.json
@@ -54,14 +56,19 @@ DRAWCLI="$SKILL_ROOT/bin/drawcli-linux-amd64" # Select the matching OS/CPU binar
 "$SKILL_ROOT/scripts/validate-svg.sh" out.svg
 ```
 
-Use the precompiled binary directly when available:
+On Windows, run `scripts/install-drawcli.ps1` from PowerShell; it installs
+`scripts/drawcli.exe`. On Unix, the installer detects the host OS/CPU and
+installs `scripts/drawcli`.
+
+The release binaries are kept in the repository root `bins/` directory. They
+are not copied into the skill directory; installation downloads only the
+matching artifact into `scripts/`.
+
+After installation, render with the installed binary:
 
 ```bash
-"$SKILL_ROOT/bin/drawcli-linux-amd64" render architecture diagram.json out.svg
+"$SKILL_ROOT/scripts/drawcli" render architecture diagram.json out.svg
 ```
-
-On Unix, `scripts/drawcli` is a convenience launcher that selects the matching
-bundled binary. On Windows, invoke the `.exe` file directly.
 
 `drawcli` accepts the legacy JSON payloads used by the bundled fixtures. The
 `mode` argument must agree with the payload's mode/template type. Style 8 is a
@@ -82,9 +89,9 @@ hand-authored static exception and cannot be generated from a template.
 Before delivery, run:
 
 ```bash
-"$DRAWCLI" validate <mode> diagram.json
-"$DRAWCLI" render <mode> diagram.json out.svg --report layout.json
-"$DRAWCLI" check out.svg
+"$SKILL_ROOT/scripts/drawcli" validate <mode> diagram.json
+"$SKILL_ROOT/scripts/drawcli" render <mode> diagram.json out.svg --report layout.json
+"$SKILL_ROOT/scripts/drawcli" check out.svg
 ```
 
 For arrow-only fixes, preserve nodes, containers, style, and layout; change

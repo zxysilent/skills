@@ -11,18 +11,23 @@
 | [modern-go](./modern-go/SKILL.md) | Go 代码现代化指南 — 基于 `go.mod` 版本，将遗留写法替换为 modern stdlib API (Go 1.0–1.26) |
 | [drawsvg](./drawsvg/SKILL.md) | 使用 Go drawcli 生成经过几何校验的 SVG 技术图表 |
 
-## 使用 drawsvg
+## 安装 drawsvg
 
-drawsvg 内置原生 `drawcli` 二进制，直接执行与当前操作系统和 CPU 架构匹配的文件。
-Linux x86-64 示例：
+预编译文件位于项目根目录 [`bins/`](./bins/)。安装时根据当前操作系统和 CPU
+架构下载对应二进制到 `drawsvg/scripts/`：
 
 ```bash
-./drawsvg/bin/drawcli-linux-amd64 doctor
+./drawsvg/scripts/install-drawcli.sh
 ```
 
-预编译文件位于 [`drawsvg/bin/`](./drawsvg/bin/)，支持 Linux amd64/arm64、
-Windows amd64 以及 macOS amd64/arm64。Unix 环境可使用
-`drawsvg/scripts/drawcli` 自动选择匹配的内置二进制。
+Windows PowerShell 执行：
+
+```powershell
+.\drawsvg\scripts\install-drawcli.ps1
+```
+
+安装器只下载与平台匹配的文件到 `drawsvg/scripts/`。支持 Linux
+amd64/arm64、Windows amd64 以及 macOS amd64/arm64。
 
 完整的生成流程、质量检查、风格和图标目录请阅读
 [`drawsvg/SKILL.md`](./drawsvg/SKILL.md) 及其 references。
@@ -52,8 +57,8 @@ skills/
     SKILL.md          # Skill 主文件
   drawsvg/
     SKILL.md          # SVG 图表技能
-    bin/               # 预编译 drawcli 二进制
-    scripts/           # 二进制启动器、构建脚本和 SVG 校验器
+    scripts/           # 安装器、下载的运行时、构建脚本和 SVG 校验器
+  bins/                # 预编译 drawcli 发布文件
   README.md           # 英文说明 (English)
   README_CN.md        # 本文件 (中文)
 ```

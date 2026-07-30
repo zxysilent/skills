@@ -8,4 +8,9 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
-exec "$SCRIPT_DIR/drawcli" check "$1"
+if [ -x "$SCRIPT_DIR/drawcli" ]; then
+  exec "$SCRIPT_DIR/drawcli" check "$1"
+fi
+
+echo "drawcli is not installed; run scripts/install-drawcli.sh first" >&2
+exit 1

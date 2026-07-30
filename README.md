@@ -12,18 +12,25 @@ reference guides accumulated through daily development.
 | [modern-go](./modern-go/SKILL.md) | Modernizing Go Code — replace legacy idioms with modern stdlib APIs based on the project's `go.mod` version (Go 1.0–1.26) |
 | [drawsvg](./drawsvg/SKILL.md) | Generate geometry-checked technical diagrams as SVG with the Go drawcli runtime |
 
-## Use drawsvg
+## Install drawsvg
 
-The skill includes native `drawcli` binaries. Run the file matching the host
-operating system and CPU architecture directly. For Linux x86-64:
+The release binaries are stored in the repository root [`bins/`](./bins/).
+Install the binary matching the current operating system and CPU architecture
+into `drawsvg/scripts/`:
 
 ```bash
-./drawsvg/bin/drawcli-linux-amd64 doctor
+./drawsvg/scripts/install-drawcli.sh
 ```
 
-Linux amd64/arm64, Windows amd64, and macOS amd64/arm64 are included in
-[`drawsvg/bin/`](./drawsvg/bin/). The Unix convenience launcher at
-`drawsvg/scripts/drawcli` resolves the matching bundled binary automatically.
+On Windows PowerShell:
+
+```powershell
+.\drawsvg\scripts\install-drawcli.ps1
+```
+
+The installer downloads only the matching binary from `bins/` into
+`drawsvg/scripts/`. Linux amd64/arm64, Windows amd64, and macOS amd64/arm64
+are supported.
 
 For the complete generation workflow, quality gates, styles, and icon catalog,
 read [`drawsvg/SKILL.md`](./drawsvg/SKILL.md) and its linked references.
@@ -56,8 +63,8 @@ skills/
     SKILL.md          # Skill definition
   drawsvg/
     SKILL.md          # SVG diagram skill
-    bin/               # Precompiled drawcli binaries
-    scripts/           # Binary launcher, build script, and SVG checker
+    scripts/           # Installer, downloaded runtime, build script, and SVG checker
+  bins/                # Precompiled drawcli releases
   README.md           # This file (English)
   README_CN.md        # 中文说明 (Chinese)
 ```
