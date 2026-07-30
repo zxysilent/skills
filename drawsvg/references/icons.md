@@ -6,6 +6,22 @@
 **Always use** inline SVG `<path>`, `<circle>`, `<rect>`, `<text>` combinations.
 **Font fallback**: embed font-family in `<style>` using system fonts only.
 
+## DrawSVG Runtime Catalog
+
+The Go runtime ships 18 provider-neutral Cloud Fabric glyphs. Use these
+`icon_id` values in Style 10 deployment JSON:
+
+`generic:traffic`, `generic:gateway`, `generic:compute`, `generic:database`,
+`generic:storage`, `generic:cache`, `generic:stream`, `generic:queue`,
+`generic:function`, `generic:kubernetes`, `generic:security`,
+`generic:identity`, `generic:search`, `generic:analytics`, `generic:model`,
+`generic:notification`, `generic:backup`, and `generic:observability`.
+
+These are the supported runtime glyphs, with stable badges, colors, and SVG
+geometry. The product tables below are design references for external,
+versioned vendor adapters; they do not imply that AWS, Azure, or GCP logos are
+bundled or that their trademarks are redistributed by this skill.
+
 ---
 
 ## Generic Semantic Shapes (No product — use these first)

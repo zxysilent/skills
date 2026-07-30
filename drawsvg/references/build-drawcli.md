@@ -17,27 +17,19 @@ Use the binary matching the host platform. Windows and macOS binaries cannot be
 smoke-tested on Linux without matching runners; their target formats can still
 be checked with `file`.
 
-## Rebuild Both Platforms
+## Rebuild Release Binaries
 
-From any working directory:
+From any working directory, use the checked-in build script so every target
+uses the same flags and output directory:
 
 ```bash
 SKILL_ROOT="${CLAUDE_SKILL_DIR:-/absolute/path/to/drawsvg}"
 GOCACHE=/tmp/drawcli-cache "$SKILL_ROOT/scripts/build-drawcli.sh"
 ```
 
-The script sets `GOOS`, `GOARCH`, and `CGO_ENABLED=0`, then runs:
-
-```bash
-go build -trimpath -buildvcs=false -ldflags="-s -w" -o bin/drawcli-linux-amd64 .
-go build -trimpath -buildvcs=false -ldflags="-s -w" -o bin/drawcli-linux-arm64 .
-go build -trimpath -buildvcs=false -ldflags="-s -w" -o bin/drawcli-windows-amd64.exe .
-go build -trimpath -buildvcs=false -ldflags="-s -w" -o bin/drawcli-darwin-amd64 .
-go build -trimpath -buildvcs=false -ldflags="-s -w" -o bin/drawcli-darwin-arm64 .
-```
-
 `-s` strips the symbol table and `-w` strips DWARF debug data. Keep both flags
-for the compact release artifacts.
+for the compact release artifacts. The script sets `GOOS`, `GOARCH`, and
+`CGO_ENABLED=0` for Linux amd64/arm64, Windows amd64, and macOS amd64/arm64.
 
 ## Verify
 

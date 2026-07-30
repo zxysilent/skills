@@ -26,6 +26,10 @@ The release binaries and cross-compilation instructions for Linux, Windows,
 and macOS are in
 [`references/build-drawcli.md`](references/build-drawcli.md).
 
+The runtime is provider-neutral by default. Style 10 uses the built-in icon
+catalog documented in [`references/style-10-cloud-fabric.md`](references/style-10-cloud-fabric.md);
+vendor logos are external adapters and are not bundled.
+
 ## Workflow
 
 1. Classify the diagram and load [`references/diagram-types-and-rules.md`](references/diagram-types-and-rules.md).
@@ -55,6 +59,9 @@ Use the precompiled binary directly when available:
 ```bash
 "$SKILL_ROOT/bin/drawcli-linux-amd64" render architecture diagram.json out.svg
 ```
+
+On Unix, `scripts/drawcli` is a convenience launcher that selects the matching
+bundled binary. On Windows, invoke the `.exe` file directly.
 
 `drawcli` accepts the legacy JSON payloads used by the bundled fixtures. The
 `mode` argument must agree with the payload's mode/template type. Style 8 is a
@@ -118,6 +125,7 @@ file.
 | Diagram types, UML, shapes, arrows, validation | `references/diagram-types-and-rules.md` |
 | Composition and spacing budgets | `references/composition-quality-contract.md` |
 | Product icons | `references/icons.md` |
+| Cloud icon catalog and provider boundary | `references/style-10-cloud-fabric.md` |
 | Style selection matrix | `references/style-diagram-matrix.md` |
 | Style tokens | `references/style-N-*.md` |
 | Go build and release binaries | `references/build-drawcli.md` |

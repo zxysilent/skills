@@ -11,7 +11,7 @@
 | [modern-go](./modern-go/SKILL.md) | Go 代码现代化指南 — 基于 `go.mod` 版本，将遗留写法替换为 modern stdlib API (Go 1.0–1.26) |
 | [drawsvg](./drawsvg/SKILL.md) | 使用 Go drawcli 生成经过几何校验的 SVG 技术图表 |
 
-## 安装 drawsvg
+## 使用 drawsvg
 
 drawsvg 内置原生 `drawcli` 二进制，直接执行与当前操作系统和 CPU 架构匹配的文件。
 Linux x86-64 示例：
@@ -23,6 +23,9 @@ Linux x86-64 示例：
 预编译文件位于 [`drawsvg/bin/`](./drawsvg/bin/)，支持 Linux amd64/arm64、
 Windows amd64 以及 macOS amd64/arm64。Unix 环境可使用
 `drawsvg/scripts/drawcli` 自动选择匹配的内置二进制。
+
+完整的生成流程、质量检查、风格和图标目录请阅读
+[`drawsvg/SKILL.md`](./drawsvg/SKILL.md) 及其 references。
 
 ## modern-go
 

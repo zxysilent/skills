@@ -12,7 +12,7 @@ reference guides accumulated through daily development.
 | [modern-go](./modern-go/SKILL.md) | Modernizing Go Code — replace legacy idioms with modern stdlib APIs based on the project's `go.mod` version (Go 1.0–1.26) |
 | [drawsvg](./drawsvg/SKILL.md) | Generate geometry-checked technical diagrams as SVG with the Go drawcli runtime |
 
-## Install drawsvg
+## Use drawsvg
 
 The skill includes native `drawcli` binaries. Run the file matching the host
 operating system and CPU architecture directly. For Linux x86-64:
@@ -24,6 +24,9 @@ operating system and CPU architecture directly. For Linux x86-64:
 Linux amd64/arm64, Windows amd64, and macOS amd64/arm64 are included in
 [`drawsvg/bin/`](./drawsvg/bin/). The Unix convenience launcher at
 `drawsvg/scripts/drawcli` resolves the matching bundled binary automatically.
+
+For the complete generation workflow, quality gates, styles, and icon catalog,
+read [`drawsvg/SKILL.md`](./drawsvg/SKILL.md) and its linked references.
 
 ## modern-go
 

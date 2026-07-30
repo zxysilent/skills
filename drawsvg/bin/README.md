@@ -12,8 +12,11 @@ go build -trimpath -buildvcs=false -ldflags="-s -w"
 - `drawcli-darwin-amd64` for Intel macOS
 - `drawcli-darwin-arm64` for Apple Silicon macOS
 
-Rebuild them with:
+Rebuild all five targets with:
 
 ```bash
-drawsvg/scripts/build-drawcli.sh
+GOCACHE=/tmp/drawcli-cache drawsvg/scripts/build-drawcli.sh
 ```
+
+The Unix launcher at `drawsvg/scripts/drawcli` chooses the matching Linux or
+macOS binary from this directory. Windows users invoke the `.exe` directly.
