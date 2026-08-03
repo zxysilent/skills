@@ -70,9 +70,12 @@ After installation, render with the installed binary:
 "$SKILL_ROOT/scripts/drawcli" render architecture diagram.json out.svg
 ```
 
-`drawcli` accepts the legacy JSON payloads used by the bundled fixtures. The
-`mode` argument must agree with the payload's mode/template type. Style 8 is a
-hand-authored static exception and cannot be generated from a template.
+`drawcli` renders the JSON payloads used by the bundled fixtures. The `mode`
+argument must agree with the payload's template type.
+
+Style 8 is a hand-authored static SVG and cannot be generated from a template;
+use the bundled `fixtures/dark-luxury-style8.svg` as the source instead of
+rendering it with `drawcli`.
 
 ## Quality Gates
 

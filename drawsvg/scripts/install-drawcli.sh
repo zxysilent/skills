@@ -18,6 +18,19 @@ esac
 
 url="$BASE_URL/drawcli-${os}-${arch}"
 output="$SCRIPT_DIR/drawcli"
+
+force=0
+for arg in "$@"; do
+  case "$arg" in
+    -f|--force) force=1 ;;
+  esac
+done
+
+if [ "$force" -eq 0 ] && [ -x "$output" ]; then
+  echo "drawcli already installed at $output (use --force to reinstall)"
+  exit 0
+fi
+
 tmp="$output.tmp.$$"
 trap 'rm -f "$tmp"' EXIT
 
