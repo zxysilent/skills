@@ -73,9 +73,11 @@ After installation, render with the installed binary:
 `drawcli` renders the JSON payloads used by the bundled fixtures. The `mode`
 argument must agree with the payload's template type.
 
-Style 8 is a hand-authored static SVG and cannot be generated from a template;
-use the bundled `fixtures/dark-luxury-style8.svg` as the source instead of
-rendering it with `drawcli`.
+Style 8 is the only hand-authored style: it cannot be generated or validated by
+`drawcli`. Author its SVG by hand following the exact tokens in
+[`references/style-8-dark-luxury.md`](references/style-8-dark-luxury.md), using
+`fixtures/dark-luxury-style8.svg` as a reference example. Apply the Quality
+Gates manually and rasterize to inspect the result.
 
 ## Quality Gates
 
